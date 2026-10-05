@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apple Motion Findings</title>
+<meta name="description" content="Итоги исследования Apple-style motion для маркетинговых видео: принципы, эталоны и рецепт одного ролика.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23101014'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%2334d399' stroke-width='5'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --surface: #ffffff;
+    --surface-2: #f2f2f6;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --line: #e3e3e8;
+    --accent: #0071e3;
+    --ok: #0a8f5c;
+    --warn: #b25e00;
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b0b0e;
+      --surface: #16161b;
+      --surface-2: #1e1e25;
+      --text: #f5f5f7;
+      --muted: #a1a1a8;
+      --line: #2a2a33;
+      --accent: #4da3ff;
+      --ok: #34d399;
+      --warn: #fbbf62;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b0b0e;
+    --surface: #16161b;
+    --surface-2: #1e1e25;
+    --text: #f5f5f7;
+    --muted: #a1a1a8;
+    --line: #2a2a33;
+    --accent: #4da3ff;
+    --ok: #34d399;
+    --warn: #fbbf62;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header.hero { padding: 72px 0 40px; }
+  .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.05; letter-spacing: -.025em; margin: 0 0 18px; font-weight: 700; }
+  .lead { font-size: clamp(18px, 2.4vw, 21px); color: var(--muted); max-width: 680px; margin: 0; }
+
+  .video {
+    margin: 36px 0 8px; border-radius: var(--radius); overflow: hidden;
+    background: #000; aspect-ratio: 16 / 9; border: 1px solid var(--line);
+  }
+  .video video { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(24px, 3.6vw, 32px); letter-spacing: -.015em; line-height: 1.15; margin: 0 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  h3 { font-size: 19px; margin: 0 0 8px; letter-spacing: -.01em; }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  li::marker { color: var(--muted); }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+  .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--muted); margin-bottom: 10px; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 10px; }
+  .steps li {
+    counter-increment: s; position: relative; margin: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 18px 16px 58px;
+  }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 16px; top: 15px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--text); color: var(--bg);
+    font-size: 14px; font-weight: 700; display: grid; place-items: center;
+  }
+  .steps b { display: block; margin-bottom: 2px; }
+  .steps span { color: var(--muted); }
+
+  .principles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .principles div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .principles b { display: block; font-size: 15px; }
+  .principles span { font-size: 15px; color: var(--muted); }
+
+  .status { display: flex; gap: 10px; align-items: flex-start; }
+  .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 8px; }
+  .dot.ok { background: var(--ok); }
+  .dot.warn { background: var(--warn); }
+
+  .callout { background: var(--surface-2); border-radius: var(--radius); padding: 22px 24px; }
+  .callout p:last-child { margin: 0; }
+
+  footer { padding: 40px 0 64px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 560px) {
+    header.hero { padding: 48px 0 28px; }
+    section { padding: 34px 0; }
+    .card { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Итоги исследования · 5 октября 2026</p>
+  <h1>Apple-style motion<br>для маркетинговых видео</h1>
+  <p class="lead">Две части одной работы: сначала разобрали, <b>как</b> двигается Apple, потом нашли, <b>что</b> снимать для SaaS-запусков, Reels и LinkedIn. Всё готово, чтобы собрать один ролик.</p>
+  <div class="video">
+    <video src="glass-pay-demo.mp4" poster="glass-pay-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+  </div>
+  <p class="caption">Демо «Glass Pay» — эталонная сборка, одобрена. Новые ролики строятся от неё.</p>
+</header>
+
+<section>
+  <h2>1. Как двигается Apple</h2>
+  <p class="sub">Разобрали проект Bentomotion Face ID и ещё 5 AE-проектов. Из этого собрана библиотека <code>apple-motion-lab</code>.</p>
+  <div class="grid">
+    <div class="card">
+      <span class="tag">12 принципов</span>
+      <h3>Не меняются от ролика к ролику</h3>
+      <p>Логика движения Apple: пружины, появление через размытие, один главный объект, тихие выходы.</p>
+    </div>
+    <div class="card">
+      <span class="tag">30 приёмов</span>
+      <h3>Растущая библиотека</h3>
+      <p>Слова поднимаются снизу, каскад букв, склейка в движении, дописать слово, резкая смена фона в такт, прыжок как гравитация и другие. Все одобрены.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Демо одобрено</span>
+      <h3>Glass Pay</h3>
+      <p>Собрали сами, 13 приёмов отработали правильно и помечены как проверенные.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px">Главные принципы</h3>
+  <div class="principles">
+    <div><b>Пружины, не длительности</b><span>Движение успокаивается как физическая пружина.</span></div>
+    <div><b>Скорость непрерывна</b><span>Никаких мёртвых остановок между связанными движениями.</span></div>
+    <div><b>Объект не заменяется</b><span>Один главный объект живёт весь ролик и трансформируется.</span></div>
+    <div><b>Материализация</b><span>Появление через blur + scale + opacity, никогда просто fade.</span></div>
+    <div><b>Выходы тише входов</b><span>Вход может пружинить, выход — никогда.</span></div>
+    <div><b>Сдвиг, не синхрон</b><span>Связанные события стартуют с разницей 1–3 кадра.</span></div>
+    <div><b>Кадр дышит</b><span>Медленный наезд камеры под всем, паузы не замирают.</span></div>
+    <div><b>Сдержанность</b><span>3–4 акцента на ролик, без «ИИ-монтажа».</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>2. Что делать для маркетинга</h2>
+  <p class="sub">Цель — не iOS-анимации, а запуски SaaS, Reels под DM и лиды, посты для LinkedIn. Отобраны три эталона.</p>
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Логика текста</span>
+      <h3><a href="https://www.youtube.com/watch?v=ISYIEmQxs2M" target="_blank" rel="noopener">Apple Creator Studio</a></h3>
+      <p>33 с, без озвучки. Каждое слово показывает свой смысл: «Scrap it.» падает в корзину, «Loop it.» зацикливается.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Камера и переходы</span>
+      <h3><a href="https://www.youtube.com/watch?v=Mi173xGb0ZA" target="_blank" rel="noopener">Raycast</a></h3>
+      <p>38 с. 2.5D motion UI: интерфейс на плоскостях в 3D, макросъёмка, размытый фон, перевод фокуса, пролёт сквозь элемент.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Темп и объяснение</span>
+      <h3><a href="https://www.youtube.com/watch?v=xDwR1_vrIg8" target="_blank" rel="noopener">Lovable</a></h3>
+      <p>79 с. Быстрая кинетическая типографика на градиентах, счётчики чисел, светящаяся строка промпта.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Рецепт одного видео</h2>
+  <p class="sub">Структура, которая повторяется во всех сильных лаунч-роликах.</p>
+  <ol class="steps">
+    <li><b>Хук до 3 секунд</b><span>Один из пяти типов: одно крупное слово (Apple), растущий счётчик проблемы (Superhuman), соцдоказательство (Dia), печатается промпт (v0), главная иконка (Notion).</span></li>
+    <li><b>Цикл «карточка → доказательство»</b><span>Заголовок 1–1,5 с, затем UI или визуал 3–8 с, и так по кругу.</span></li>
+    <li><b>Один главный объект</b><span>Проходит через весь ролик и в конце превращается в логотип.</span></li>
+    <li><b>Финальная карточка</b><span>Логотип и URL держатся 3–5 секунд.</span></li>
+    <li><b>Длина</b><span>Reels — 10–30 с, LinkedIn — 30–45 с.</span></li>
+    <li><b>Safe zone для 9:16</b><span>Весь текст внутри x 65–1015, y 269–1248 (кадр 1080×1920).</span></li>
+    <li><b>Палитра</b><span>Белая/кремовая или тёмная со свечением; мягкие градиенты — между ними.</span></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Статус</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="status"><span class="dot ok"></span><div><h3>Готово</h3>
+        <ul>
+          <li>12 принципов и 30 приёмов, все одобрены</li>
+          <li>Демо Glass Pay — эталонная сборка</li>
+          <li>Приёмы для текста в духе Creator Studio проверены</li>
+          <li>Правила платформ: safe zone, хук, длины</li>
+        </ul></div></div>
+    </div>
+    <div class="card">
+      <div class="status"><span class="dot warn"></span><div><h3>Не доделано</h3>
+        <ul>
+          <li>Эталоны изучены по раскадровкам (~1 кадр/с), точных цифр по кадрам нет</li>
+          <li>2.5D-камера Raycast ещё не собрана в After Effects</li>
+        </ul></div></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:14px">
+    <p><b>Вывод:</b> одно видео можно делать сейчас — логика текста Creator Studio плюс проверенные приёмы из Glass Pay. Камеру Raycast — на второй ролик.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Что нужно для первого ролика</h2>
+  <ol class="steps">
+    <li><b>Продукт и главная мысль</b><span>Что рекламируем — одной фразой.</span></li>
+    <li><b>Формат</b><span>9:16 для Reels, 16:9 для LinkedIn или оба.</span></li>
+    <li><b>Тексты на экране</b><span>2–4 короткие фразы, или предложим свои.</span></li>
+    <li><b>Бренд</b><span>Логотип и цвета. Если нет — палитра из демо.</span></li>
+  </ol>
+</section>
+
+<footer>apple-motion-lab · итоги исследования · октябрь 2026</footer>
+
+</div>
+</body>
+</html>

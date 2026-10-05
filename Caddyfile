@@ -1,0 +1,11 @@
+{
+	admin off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+	file_server
+	header *.mp4 Cache-Control "public, max-age=604800"
+	header *.jpg Cache-Control "public, max-age=604800"
+}
