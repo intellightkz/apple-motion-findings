@@ -5,7 +5,13 @@
 :{$PORT:8080} {
 	root * /srv
 	encode zstd gzip
-	file_server
+	# Fills {{env "OWNER_*"}} placeholders in index.html on every request
+	templates {
+		mime text/html
+	}
+	header /index.html Cache-Control "no-cache"
+	header / Cache-Control "no-cache"
 	header *.mp4 Cache-Control "public, max-age=604800"
 	header *.jpg Cache-Control "public, max-age=604800"
+	file_server
 }

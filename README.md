@@ -1,11 +1,17 @@
 # Apple Motion Findings
 
+**Start here: [START.md](START.md)** — where to put your name, ID and photo, and how to deploy.
+
 Static site with the results of the Apple-style motion research for marketing videos: principles, reference films and a recipe for one launch video.
 
 ## Run locally
 
 ```bash
-docker build -t motion-findings . && docker run --rm -p 8080:8080 motion-findings
+cp .env.example .env
+```
+
+```bash
+docker build -t motion-findings . && docker run --rm -p 8080:8080 --env-file .env motion-findings
 ```
 
 Open http://localhost:8080.
@@ -15,12 +21,13 @@ Open http://localhost:8080.
 1. Railway → **New Project** → **Deploy from GitHub repo** → pick this repo.
 2. Railway builds the `Dockerfile` (see `railway.json`). Caddy listens on `$PORT`, which Railway sets.
 3. Service → **Settings** → **Networking** → **Generate Domain**.
+4. Service → **Variables**: `OWNER_NAME`, `OWNER_ID`, `OWNER_PHOTO` (see START.md).
 
 Every push to `main` redeploys automatically.
 
 ## Structure
 
 - `site/` — `index.html`, demo video and poster
-- `Caddyfile` — static file server on `$PORT`
+- `Caddyfile` — static file server on `$PORT`, fills `OWNER_*` env vars into the HTML
 - `Dockerfile` — `caddy:2-alpine` image
 - `railway.json` — build and healthcheck config

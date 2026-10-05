@@ -57,6 +57,16 @@
   a:hover { text-decoration: underline; }
 
   header.hero { padding: 72px 0 40px; }
+  .owner { display: flex; align-items: center; gap: 14px; margin: 0 0 32px; }
+  .avatar {
+    flex: none; width: 52px; height: 52px; border-radius: 50%;
+    object-fit: cover; background: var(--surface-2); border: 1px solid var(--line);
+  }
+  .avatar-empty { display: grid; place-items: center; color: var(--muted); }
+  .owner-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+  .owner-text b { font-size: 17px; }
+  .owner-text a, .owner-text span { font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
+  .owner-text a:hover { color: var(--accent); }
   .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
   h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.05; letter-spacing: -.025em; margin: 0 0 18px; font-weight: 700; }
   .lead { font-size: clamp(18px, 2.4vw, 21px); color: var(--muted); max-width: 680px; margin: 0; }
@@ -122,7 +132,30 @@
 <body>
 <div class="wrap">
 
+{{- /* Owner card: values come from env vars OWNER_NAME, OWNER_ID, OWNER_PHOTO (see START.md). */ -}}
+{{- $name := env "OWNER_NAME" | trim -}}
+{{- $id := env "OWNER_ID" | trim -}}
+{{- $photo := env "OWNER_PHOTO" | trim -}}
 <header class="hero">
+  {{- if $name}}
+  <div class="owner">
+    {{- if $photo}}
+    <img class="avatar" src="{{html $photo}}" alt="{{html $name}}" width="52" height="52">
+    {{- else}}
+    <span class="avatar avatar-empty" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg></span>
+    {{- end}}
+    <div class="owner-text">
+      <b>{{html $name}}</b>
+      {{- if $id}}
+      {{- if hasPrefix "@" $id}}
+      <a href="https://t.me/{{html (trimPrefix "@" $id)}}" target="_blank" rel="noopener">{{html $id}}</a>
+      {{- else}}
+      <span>{{html $id}}</span>
+      {{- end}}
+      {{- end}}
+    </div>
+  </div>
+  {{- end}}
   <p class="eyebrow">Итоги исследования · 5 октября 2026</p>
   <h1>Apple-style motion<br>для маркетинговых видео</h1>
   <p class="lead">Две части одной работы: сначала разобрали, <b>как</b> двигается Apple, потом нашли, <b>что</b> снимать для SaaS-запусков, Reels и LinkedIn. Всё готово, чтобы собрать один ролик.</p>
