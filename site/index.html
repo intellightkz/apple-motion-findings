@@ -62,7 +62,6 @@
     flex: none; width: 52px; height: 52px; border-radius: 50%;
     object-fit: cover; background: var(--surface-2); border: 1px solid var(--line);
   }
-  .avatar-empty { display: grid; place-items: center; color: var(--muted); }
   .owner-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
   .owner-text b { font-size: 17px; }
   .owner-text a, .owner-text span { font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
@@ -132,18 +131,13 @@
 <body>
 <div class="wrap">
 
-{{- /* Owner card: values come from env vars OWNER_NAME, OWNER_ID, OWNER_PHOTO (see START.md). */ -}}
+{{- /* Owner card: name and ID come from env vars OWNER_NAME, OWNER_ID; photo is the file site/photo.jpg (see START.md). */ -}}
 {{- $name := env "OWNER_NAME" | trim -}}
 {{- $id := env "OWNER_ID" | trim -}}
-{{- $photo := env "OWNER_PHOTO" | trim -}}
 <header class="hero">
   {{- if $name}}
   <div class="owner">
-    {{- if $photo}}
-    <img class="avatar" src="{{html $photo}}" alt="{{html $name}}" width="52" height="52">
-    {{- else}}
-    <span class="avatar avatar-empty" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg></span>
-    {{- end}}
+    <img class="avatar" src="photo.jpg" alt="{{html $name}}" width="52" height="52">
     <div class="owner-text">
       <b>{{html $name}}</b>
       {{- if $id}}
